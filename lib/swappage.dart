@@ -1,7 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class SwapPage extends StatelessWidget {
+class SwapPage extends StatefulWidget {
   const SwapPage({Key? key}) : super(key: key);
+
+  @override
+  State<SwapPage> createState() => _SwapPageState();
+}
+
+class _SwapPageState extends State<SwapPage> {
+  final TextEditingController _payAmountController = TextEditingController();
+  final TextEditingController _receiveAmountController = TextEditingController();
+  
+  @override
+  void initState() {
+    super.initState();
+    _payAmountController.addListener(_onPayAmountChanged);
+  }
+
+  @override
+  void dispose() {
+    _payAmountController.dispose();
+    _receiveAmountController.dispose();
+    super.dispose();
+  }
+
+  void _onPayAmountChanged() {
+    // Mock conversion rate (1 SOL = 0.5 USDC for demo)
+    final payAmount = double.tryParse(_payAmountController.text) ?? 0;
+    final receiveAmount = payAmount * 0.5;
+    _receiveAmountController.text = receiveAmount > 0 ? receiveAmount.toStringAsFixed(6) : '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +75,7 @@ class SwapPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      crossAxisAlignment: CrossAxisAlignment.start,                      children: [
                         const Text(
                           'You Pay',
                           style: TextStyle(
@@ -59,13 +87,27 @@ class SwapPage extends StatelessWidget {
                         const SizedBox(height: 12),
                         Row(
                           children: [
-                            const Expanded(
-                              child: Text(
-                                '0',
-                                style: TextStyle(
+                            Expanded(
+                              child: TextField(
+                                controller: _payAmountController,
+                                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
+                                ],
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 32,
                                   fontWeight: FontWeight.w300,
+                                ),
+                                decoration: const InputDecoration(
+                                  hintText: '0',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.zero,
                                 ),
                               ),
                             ),
@@ -118,6 +160,9 @@ class SwapPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Row(
+                          // mainAxisAlignment: MainAxisAlignment.,
+                          // crossAxisAlignment: CrossAxisAlignment.stretch,
+
                           children: [
                             IconButton(
                               icon: const Icon(Icons.swap_vert, color: Colors.grey, size: 16),
@@ -161,8 +206,7 @@ class SwapPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      crossAxisAlignment: CrossAxisAlignment.start,                      children: [
                         const Text(
                           'You Receive',
                           style: TextStyle(
@@ -174,13 +218,24 @@ class SwapPage extends StatelessWidget {
                         const SizedBox(height: 12),
                         Row(
                           children: [
-                            const Expanded(
-                              child: Text(
-                                '0',
-                                style: TextStyle(
+                            Expanded(
+                              child: TextField(
+                                controller: _receiveAmountController,
+                                readOnly: true, // Auto-calculated based on pay amount
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 32,
                                   fontWeight: FontWeight.w300,
+                                ),
+                                decoration: const InputDecoration(
+                                  hintText: '0',
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  border: InputBorder.none,
+                                  contentPadding: EdgeInsets.zero,
                                 ),
                               ),
                             ),
@@ -300,7 +355,7 @@ class SwapPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 80,
+        height: 50,
         decoration: const BoxDecoration(
           color: Color(0xFF1A1A1A),
           border: Border(
@@ -337,7 +392,12 @@ class SwapPage extends StatelessWidget {
     final changeColor = isPositive ? const Color(0xFF10B981) : const Color(0xFFEF4444);
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+     margin: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2A2A2A),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           // Token Icon
@@ -346,6 +406,7 @@ class SwapPage extends StatelessWidget {
             height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
+       
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
@@ -355,25 +416,29 @@ class SwapPage extends StatelessWidget {
           const SizedBox(width: 12),
           // Token Info
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  token.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+            child: Padding(
+              padding: const EdgeInsets.all(3.0),
+              child: Column(
+              
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    token.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Text(
-                  token.marketCap,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
+                  Text(
+                    token.marketCap,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           // Price and Change

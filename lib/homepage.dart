@@ -3,6 +3,10 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:phantom/profile.dart';
+import 'package:phantom/searchpage.dart';
+import 'package:phantom/sendpage.dart';
 import 'package:phantom/swappage.dart';
 
 class HomePage extends StatelessWidget {
@@ -33,22 +37,32 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        title: const Text(
-          'Account 1',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const EditAccountPage()));
+            // Navigate to account details or profile page
+          },
+          child: const Text(
+            'Account 1',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.qr_code_scanner, color: Colors.white),
             onPressed: () {},
-          ),
-          IconButton(
+          ),          IconButton(
             icon: const Icon(Icons.search, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchPage()),
+              );
+            },
           ),
         ],
       ),
@@ -65,7 +79,7 @@ class HomePage extends StatelessWidget {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A2A),
+                      color: Color.fromARGB(255, 73, 72, 72),
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: Stack(
@@ -121,7 +135,7 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 4),
                   const Text(
                     'Welcome, @FertilePeach394',
                     style: TextStyle(
@@ -130,25 +144,25 @@ class HomePage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 0),
                   const Text(
                     'Add Solana (SOL) to your wallet to get started',
                     style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 16,
+                      fontSize: 14,
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 8),
                   // Buy SOL Button
                   Container(
                     width: double.infinity,
-                    height: 56,
+                    height: 42,
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF8B5CF6),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       child: const Text(
@@ -161,39 +175,59 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Transfer crypto',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                  const SizedBox(height: 10),
+                  Container(
+                    width: double.infinity,
+                    height: 42,
+                    decoration: BoxDecoration(
+
+                      color: Color.fromARGB(255, 84, 84, 84),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Transfer crypto',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
+              margin: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2A2A2A),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              
             ),
             // Action Buttons
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildActionButton(Icons.qr_code, 'Receive'),
-                  _buildActionButton(Icons.send, 'Send'),
+                  _buildActionButton(Icons.qr_code, 'Receive'),                  GestureDetector(
+                    onTap: () {
+                      // Handle send action
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SendPage()));
+                    },
+                    child: _buildActionButton(Icons.send, 'Send'),
+                  ),
                   _buildActionButton(Icons.swap_horiz, 'Swap'),
                   _buildActionButton(Icons.attach_money, 'Buy'),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 8),
             // Liquid Stake Banner
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24),
-              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: const Color(0xFF2A2A2A),
                 borderRadius: BorderRadius.circular(12),
@@ -300,7 +334,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 80,
+        height: 50,
         decoration: const BoxDecoration(
           color: Color(0xFF1A1A1A),
           border: Border(
@@ -323,10 +357,14 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.history, color: Colors.grey, size: 28),
               onPressed: () {},
-            ),
-            IconButton(
+            ),            IconButton(
               icon: const Icon(Icons.search, color: Colors.grey, size: 28),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SearchPage()),
+                );
+              },
             ),
           ],
         ),
@@ -338,39 +376,55 @@ class HomePage extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 60,
-          height: 60,
+          margin: EdgeInsets.all(7),
+          width: 90,
+          height: 70,
           decoration: BoxDecoration(
             color: const Color(0xFF2A2A2A),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 24,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: Colors.deepPurpleAccent,
+                size: 24,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 157, 152, 152),
+                  fontSize: 12,
+                  // fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        
       ],
     );
   }
 
   Widget _buildTokenItem(String name, String subtitle, String balance, IconData icon, Color iconColor) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+
+      decoration: BoxDecoration(
+            color: const Color(0xFF2A2A2A),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(8),
       child: Row(
+        
         children: [
           Container(
-            width: 48,
-            height: 48,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
+            width: 36,
+            height: 36,
             decoration: BoxDecoration(
               color: iconColor,
               borderRadius: BorderRadius.circular(24),
@@ -386,22 +440,32 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                if (subtitle.isNotEmpty)
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
+                Row(
+                  children: [
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        // fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 8),
+                    if (subtitle.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        color: Color.fromARGB(255, 87, 86, 86),
+                        child: Text(
+                          subtitle,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                
                 Text(
                   balance.isEmpty ? '0 ETH' : balance,
                   style: const TextStyle(
@@ -412,25 +476,29 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Text(
-                '\$0.00',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+          Container(
+            margin: const EdgeInsets.only(right: 12),
+            child: Column(
+              
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const Text(
+                  '\$0.00',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              const Text(
-                '\$0.00',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
+                const Text(
+                  '\$0.00',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 14,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
