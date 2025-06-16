@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phantom/send1page.dart';
 
 class SendPage extends StatefulWidget {
   const SendPage({Key? key}) : super(key: key);
@@ -96,15 +95,9 @@ class _SendPageState extends State<SendPage> {
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _isButtonEnabled 
+              child: ElevatedButton(                onPressed: _isButtonEnabled 
                   ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SelectTokenPage(),
-                        ),
-                      );
+                      Navigator.pushNamed(context, '/select-token');
                     }
                   : null,
                 style: ElevatedButton.styleFrom(

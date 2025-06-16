@@ -4,10 +4,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:phantom/profile.dart';
-import 'package:phantom/searchpage.dart';
-import 'package:phantom/sendpage.dart';
-import 'package:phantom/swappage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,11 +32,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ],
-        ),
-        title: GestureDetector(
+        ),        title: GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const EditAccountPage()));
-            // Navigate to account details or profile page
+            Navigator.pushNamed(context, '/profile');
           },
           child: const Text(
             'Account 1',
@@ -58,10 +52,7 @@ class HomePage extends StatelessWidget {
           ),          IconButton(
             icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SearchPage()),
-              );
+              Navigator.pushNamed(context, '/search');
             },
           ),
         ],
@@ -213,12 +204,16 @@ class HomePage extends StatelessWidget {
                 children: [
                   _buildActionButton(Icons.qr_code, 'Receive'),                  GestureDetector(
                     onTap: () {
-                      // Handle send action
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SendPage()));
+                      Navigator.pushNamed(context, '/send');
                     },
                     child: _buildActionButton(Icons.send, 'Send'),
                   ),
-                  _buildActionButton(Icons.swap_horiz, 'Swap'),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/swap');
+                    },
+                    child: _buildActionButton(Icons.swap_horiz, 'Swap'),
+                  ),
                   _buildActionButton(Icons.attach_money, 'Buy'),
                 ],
               ),
@@ -347,11 +342,10 @@ class HomePage extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.home, color: Color(0xFF8B5CF6), size: 28),
               onPressed: () {},
-            ),
-            IconButton(
+            ),            IconButton(
               icon: const Icon(Icons.swap_horiz, color: Colors.grey, size: 28),
               onPressed: () {
-                Navigator.push(context,MaterialPageRoute(builder: (context)=>SwapPage()),);
+                Navigator.pushNamed(context, '/swap');
               },
             ),
             IconButton(
@@ -360,10 +354,7 @@ class HomePage extends StatelessWidget {
             ),            IconButton(
               icon: const Icon(Icons.search, color: Colors.grey, size: 28),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SearchPage()),
-                );
+                Navigator.pushNamed(context, '/search');
               },
             ),
           ],

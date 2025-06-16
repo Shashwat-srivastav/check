@@ -200,20 +200,20 @@ class _SelectTokenPageState extends State<SelectTokenPage> {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),          onTap: () {
             // Navigate to EnterAmountPage with selected token
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(                builder: (context) => AmountPage.EnterAmountPage(
-                  selectedToken: AmountPage.Token(
-                    name: token.name,
-                    symbol: token.symbol,
-                    balance: token.balance,
-                    iconPath: token.iconPath,
-                    iconColor: token.iconColor,
-                    badge: token.badge,
-                  ),
-                  recipientAddress: '', // You can pass actual recipient address here
+              '/enter-amount',
+              arguments: {
+                'selectedToken': AmountPage.Token(
+                  name: token.name,
+                  symbol: token.symbol,
+                  balance: token.balance,
+                  iconPath: token.iconPath,
+                  iconColor: token.iconColor,
+                  badge: token.badge,
                 ),
-              ),
+                'recipientAddress': '@surender (0x1dbC...9C1b)',
+              },
             );
           },
           child: Container(
